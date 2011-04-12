@@ -19,4 +19,11 @@ public class ServiceObject implements ServiceInterface {
     public void exceptionTest() throws Exception {
         throw new Exception("This is a test exception message!");
     }
+
+    @Override
+    public ComplexType complexTypeMethod(ComplexType arg) {
+        arg.testField1++;
+        arg.testField2 = !arg.testField2;
+        return arg;
+    }
 }

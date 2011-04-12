@@ -54,6 +54,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>ru.fractalizer.jrapidrcdemo.SampleApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

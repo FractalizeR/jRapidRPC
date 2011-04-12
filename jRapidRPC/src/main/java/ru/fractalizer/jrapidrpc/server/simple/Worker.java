@@ -97,7 +97,7 @@ class Worker implements Runnable {
             try {
                 msgRpcRequest = serializer.receiveRpcRequest(inputStream);
             } catch (ProtocolDataException e) {
-                if (clientSocket.isConnected()) {
+                if (clientSocket.isClosed()) {
                     logger.error("Error receiving RPC request stream", e);
                 }
                 closeClientSocket();

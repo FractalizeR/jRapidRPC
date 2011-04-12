@@ -3,9 +3,10 @@ package ru.fractalizer.jrapidrcdemo;
 import ru.fractalizer.jrapidrpc.api.RPCMethod;
 
 /**
- * Copyright (c) 2011 by Vladislav "FractalizeR" Rastrusny
+ * RPC interface for sample application
  */
 public interface ServiceInterface {
+
     @RPCMethod(methodId = 10)
     void voidMethod();
 
@@ -14,4 +15,7 @@ public interface ServiceInterface {
 
     @RPCMethod(methodId = 25)
     void exceptionTest() throws Exception;
+
+    @RPCMethod(methodId = 30)
+    ComplexType complexTypeMethod(ComplexType arg);
 }
