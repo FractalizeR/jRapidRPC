@@ -21,6 +21,7 @@ package ru.fractalizer.jrapidrpc.server.simple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.fractalizer.jrapidrpc.api.ISerializer;
+import ru.fractalizer.jrapidrpc.api.ServerStartupException;
 import ru.fractalizer.jrapidrpc.tools.ReflectionCache;
 
 import java.io.IOException;
@@ -58,11 +59,12 @@ class Acceptor<T, V extends T> implements Runnable {
      * @param serviceInterface         The RPC interface
      * @param serviceObjectClass       The class of the service object which is responsible for handling client connections
      * @param threadPoolOverflowPolicy The policy in case of thread pool overflow
-     * @throws Exception Is thrown in case something went wrong
+     * @throws ServerStartupException Is thrown in case something went wrong
      */
     Acceptor(ITerminateSignaller terminateSignaller, ServerSocket serverSocket, ThreadModelType threadModelType,
              ExecutorService executorService, ISerializer serializer, Class<T> serviceInterface,
-             Class<V> serviceObjectClass, ThreadPoolOverflowPolicy threadPoolOverflowPolicy) throws Exception {
+             Class<V> serviceObjectClass, ThreadPoolOverflowPolicy threadPoolOverflowPolicy)
+            throws ServerStartupException {
 
         this.terminateSignaller = terminateSignaller;
         this.serverSocket = serverSocket;
@@ -76,13 +78,19 @@ class Acceptor<T, V extends T> implements Runnable {
 
         switch (this.threadModelType) {
             case Singleton:
-                serviceObjectSingleton = serviceObjectClass.newInstance();
+                try {
+                    serviceObjectSingleton = serviceObjectClass.newInstance();
+                } catch (InstantiationException e) {
+                    throw new ServerStartupException("Cannot create service object singleton instance!", e);
+                } catch (IllegalAccessException e) {
+                    throw new ServerStartupException("Cannot create service object singleton instance!", e);
+                }
                 break;
             case InstancePerThread:
                 serviceObjectSingleton = null;
                 break;
             default:
-                throw new Exception("Unknown threading model!");
+                throw new ServerStartupException("Unknown threading model!");
         }
     }
 

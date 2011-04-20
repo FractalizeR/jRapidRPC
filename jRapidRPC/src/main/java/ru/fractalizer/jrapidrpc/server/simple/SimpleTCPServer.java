@@ -19,6 +19,7 @@
 package ru.fractalizer.jrapidrpc.server.simple;
 
 import ru.fractalizer.jrapidrpc.api.ISerializer;
+import ru.fractalizer.jrapidrpc.api.ServerStartupException;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -125,12 +126,18 @@ public class SimpleTCPServer implements ITerminateSignaller {
      *
      * @param serviceInterface   An interface which is used in RPC communication (must be implemented by @see serviceObjectClass type)
      * @param serviceObjectClass Object type which instance is supposed to receive RPC requests
-     * @throws Exception In case something goes wrong...
+     * @throws ServerStartupException In case something goes wrong...
      */
-    public <T, V extends T> void start(Class<T> serviceInterface, Class<V> serviceObjectClass) throws Exception {
-        socket = new ServerSocket(this.port, this.backlog, this.bindAddr);
-        acceptor = new Thread(new Acceptor(this, socket, threadModelType, executorService, serializer, serviceInterface,
-                serviceObjectClass, threadPoolOverflowPolicy));
+    public <T, V extends T> void start(Class<T> serviceInterface, Class<V> serviceObjectClass)
+            throws ServerStartupException {
+        try {
+            socket = new ServerSocket(this.port, this.backlog, this.bindAddr);
+        } catch (IOException e) {
+            throw new ServerStartupException("Cannot create server socket!", e);
+        }
+        acceptor = new Thread(
+                new Acceptor<T, V>(this, socket, threadModelType, executorService, serializer, serviceInterface,
+                        serviceObjectClass, threadPoolOverflowPolicy));
         acceptor.start();
     }
 
