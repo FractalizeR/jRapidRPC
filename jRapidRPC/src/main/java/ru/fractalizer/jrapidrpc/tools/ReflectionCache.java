@@ -3,7 +3,7 @@
  * Copyright (c) 2011 Vladislav "FractalizeR" Rastrusny
  * Website: http://www.fractalizer.ru
  * Email: FractalizeR@yandex.ru
- * ------------------------------------------------------------------------
+ * ========================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ public class ReflectionCache {
      * @param serviceInterface Interface to cache methods from
      */
     public ReflectionCache(Class<?> serviceInterface) {
-        if(!serviceInterface.isInterface()) {
+        if (!serviceInterface.isInterface()) {
             throw new ClassFormatError("Class " + serviceInterface.getName() + " is not an interface!");
         }
         Method[] methods = serviceInterface.getMethods();
@@ -76,6 +76,7 @@ public class ReflectionCache {
 
     /**
      * Returns reflection method info for the given method name
+     *
      * @param methodName The name of the method
      * @return Reflection data for a given method
      */
@@ -85,6 +86,7 @@ public class ReflectionCache {
 
     /**
      * Returns method ID by its name
+     *
      * @param methodName The name of the method
      * @return Method it
      */
@@ -94,6 +96,7 @@ public class ReflectionCache {
 
     /**
      * Returns method name by its ID
+     *
      * @param methodId Id of the method
      * @return Method name
      */

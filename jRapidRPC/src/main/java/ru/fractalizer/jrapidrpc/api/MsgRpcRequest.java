@@ -3,7 +3,7 @@
  * Copyright (c) 2011 Vladislav "FractalizeR" Rastrusny
  * Website: http://www.fractalizer.ru
  * Email: FractalizeR@yandex.ru
- * ------------------------------------------------------------------------
+ * ========================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,8 @@ package ru.fractalizer.jrapidrpc.api;
  * Class incapsulates RPC Request
  */
 public final class MsgRpcRequest {
-    private String methodName = null;
+
+    private String   methodName       = null;
     private Object[] methodParameters = null;
 
     public MsgRpcRequest(String methodName, Object[] methodParameters) {

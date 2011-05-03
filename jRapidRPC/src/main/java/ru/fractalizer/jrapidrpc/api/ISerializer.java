@@ -3,7 +3,7 @@
  * Copyright (c) 2011 Vladislav "FractalizeR" Rastrusny
  * Website: http://www.fractalizer.ru
  * Email: FractalizeR@yandex.ru
- * ------------------------------------------------------------------------
+ * ========================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,7 +41,7 @@ public interface ISerializer {
      *
      * @param inputStream A stream to read request from
      * @return Deserialized message
-     * @throws IOException              Is thrown on any transportation problem
+     * @throws IOException Is thrown on any transportation problem
      */
     MsgRpcRequest receiveRpcRequest(InputStream inputStream) throws IOException, ProtocolDataException;
 
