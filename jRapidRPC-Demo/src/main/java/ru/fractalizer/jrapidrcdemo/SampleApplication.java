@@ -1,4 +1,3 @@
-package ru.fractalizer.jrapidrcdemo;
 /*
  * ========================================================================
  * Copyright (c) 2011 Vladislav "FractalizeR" Rastrusny
@@ -17,6 +16,8 @@ package ru.fractalizer.jrapidrcdemo;
  * ========================================================================
  */
 
+package ru.fractalizer.jrapidrcdemo;
+
 import ru.fractalizer.jrapidrpc.client.simple.SimpleTCPClient;
 import ru.fractalizer.jrapidrpc.serializer.protostuff.SerializerCore;
 import ru.fractalizer.jrapidrpc.server.simple.SimpleTCPServer;
@@ -27,15 +28,16 @@ public class SampleApplication {
     /**
      * Some random TCP port number
      */
-    private static final int PORT_NUM         = 64584;
+    private static final int PORT_NUM = 64584;
 
     /**
      * How many cycles to make to test speed
      */
-    private static final int BENCHMARK_CYCLES = 10000; //Make this number of cycles in each benchmark
+    private static final int BENCHMARK_CYCLES = 100000; //Make this number of cycles in each benchmark
 
     /**
      * Main application entry method
+     *
      * @param args Arguments (not used).
      * @throws Exception Is thrown in case something went wrong
      */

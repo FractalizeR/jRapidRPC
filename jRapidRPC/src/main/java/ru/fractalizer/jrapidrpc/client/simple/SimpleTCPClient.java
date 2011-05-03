@@ -31,11 +31,12 @@ import java.net.Socket;
 /**
  * Simple TCP client
  */
+@SuppressWarnings({"unchecked"})
 public class SimpleTCPClient implements InvocationHandler {
 
     private String       serverHost;
     private int          serverPort;
-    private ISerializer serializer;
+    private ISerializer  serializer;
     private Socket       socket;
     private OutputStream outputStream;
     private InputStream  inputStream;
@@ -103,5 +104,14 @@ public class SimpleTCPClient implements InvocationHandler {
             throw new RpcMethodInvocationException(msgRpcReply.getErrorMessage());
         }
         return msgRpcReply.getMethodReturnValue();
+    }
+
+    /**
+     * Returns socket connection status
+     *
+     * @return True, if socket is connected, false otherwise
+     */
+    public boolean isConnected() {
+        return socket.isConnected();
     }
 }
