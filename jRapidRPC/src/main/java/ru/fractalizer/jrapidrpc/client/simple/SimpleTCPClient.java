@@ -72,9 +72,10 @@ public class SimpleTCPClient implements InvocationHandler {
             outputStream = socket.getOutputStream();
             inputStream = socket.getInputStream();
         } catch (IOException e) {
-            inputStream.close();
-            outputStream.close();
-            socket.close();
+            if (inputStream != null) {inputStream.close();}
+            if (outputStream != null) {outputStream.close();}
+            if (socket != null) {socket.close();}
+
             throw e;
         }
         return (T) Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{serviceInterface}, this);
