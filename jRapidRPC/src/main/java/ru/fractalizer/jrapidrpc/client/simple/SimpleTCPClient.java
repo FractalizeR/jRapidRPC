@@ -113,6 +113,6 @@ public class SimpleTCPClient implements InvocationHandler {
      * @return True, if socket is connected, false otherwise
      */
     public boolean isConnected() {
-        return socket != null && socket.isConnected();
+        return (socket != null) && (!socket.isClosed()) && socket.isConnected();
     }
 }
