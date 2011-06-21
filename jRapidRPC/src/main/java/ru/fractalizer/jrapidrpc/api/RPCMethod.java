@@ -31,5 +31,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface RpcMethod {
 
+    /**
+     * @return The ID of the RPC method
+     */
     short methodId();
 }
