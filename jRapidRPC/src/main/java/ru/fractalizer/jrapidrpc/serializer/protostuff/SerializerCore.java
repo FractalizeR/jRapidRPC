@@ -23,10 +23,10 @@ import com.dyuproject.protostuff.ProtobufException;
 import com.dyuproject.protostuff.ProtostuffIOUtil;
 import com.dyuproject.protostuff.Schema;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
-import ru.fractalizer.jrapidrpc.api.ISerializer;
 import ru.fractalizer.jrapidrpc.api.MsgRpcReply;
 import ru.fractalizer.jrapidrpc.api.MsgRpcRequest;
 import ru.fractalizer.jrapidrpc.api.ProtocolDataException;
+import ru.fractalizer.jrapidrpc.api.Serializer;
 import ru.fractalizer.jrapidrpc.tools.ReflectionCache;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ import java.io.OutputStream;
 /**
  * RPC data serializer based on http://code.google.com/p/protostuff/ library. It is thread-safe
  */
-public final class SerializerCore implements ISerializer {
+public final class SerializerCore implements Serializer {
 
     /**
      * Here we cache metadata about the service class. Cache should be thread-safe

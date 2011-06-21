@@ -20,10 +20,10 @@ package ru.fractalizer.jrapidrpc.server.simple;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.fractalizer.jrapidrpc.api.ISerializer;
 import ru.fractalizer.jrapidrpc.api.MsgRpcReply;
 import ru.fractalizer.jrapidrpc.api.MsgRpcRequest;
 import ru.fractalizer.jrapidrpc.api.ProtocolDataException;
+import ru.fractalizer.jrapidrpc.api.Serializer;
 import ru.fractalizer.jrapidrpc.tools.ReflectionCache;
 
 import java.io.IOException;
@@ -44,11 +44,11 @@ class Worker implements Runnable {
 
     private static AtomicLong threadNumber = new AtomicLong(0);
 
-    private ITerminateSignaller terminateSignaller;
-    private Socket              clientSocket;
-    private ISerializer         serializer;
-    private ReflectionCache     reflectionCache;
-    private Object              serviceObject;
+    private TerminateSignaller terminateSignaller;
+    private Socket             clientSocket;
+    private Serializer         serializer;
+    private ReflectionCache    reflectionCache;
+    private Object             serviceObject;
 
 
     /**
@@ -60,7 +60,7 @@ class Worker implements Runnable {
      * @param reflectionCache    Reflection cache to use
      * @param serviceObject      Service object to dispatch RPC requests to
      */
-    Worker(ITerminateSignaller terminateSignaller, Socket clientSocket, ISerializer serializer,
+    Worker(TerminateSignaller terminateSignaller, Socket clientSocket, Serializer serializer,
            ReflectionCache reflectionCache, Object serviceObject) {
         super();
         this.terminateSignaller = terminateSignaller;
@@ -73,10 +73,26 @@ class Worker implements Runnable {
     @Override
     public void run() {
         Thread.currentThread().setName("SimpleTCPServer Worker Thread #" + threadNumber.incrementAndGet());
-        InputStream inputStream;
-        OutputStream outputStream;
+
+        //Calling prelogin method if available
+        Method preLoginMethod = reflectionCache.getPreLoginMethod();
+        if (preLoginMethod != null) {
+            try {
+                if (!((Boolean) preLoginMethod.invoke(serviceObject, clientSocket))) {
+                    logger.info("Prelogin method returned false. Closing client connection and exitting.");
+                    closeClientSocket();
+                    return;
+                }
+            } catch (Exception e) {
+                logger.error("Exception while calling preLoginMethod on serviceObject!", e);
+                closeClientSocket();
+                return;
+            }
+        }
 
         //Fetching socket data streams
+        InputStream inputStream;
+        OutputStream outputStream;
         try {
             inputStream = clientSocket.getInputStream();
             outputStream = clientSocket.getOutputStream();

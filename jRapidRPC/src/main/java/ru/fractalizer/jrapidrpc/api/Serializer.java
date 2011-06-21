@@ -25,7 +25,7 @@ import java.io.OutputStream;
 /**
  * Common interface for library-compliant serializers
  */
-public interface ISerializer {
+public interface Serializer {
 
     /**
      * Method should send serialized RPC request to a given stream
@@ -41,7 +41,8 @@ public interface ISerializer {
      *
      * @param inputStream A stream to read request from
      * @return Deserialized message
-     * @throws IOException Is thrown on any transportation problem
+     * @throws IOException           Is thrown on any transportation problem
+     * @throws ProtocolDataException If something is wrong with protocol data on request
      */
     MsgRpcRequest receiveRpcRequest(InputStream inputStream) throws IOException, ProtocolDataException;
 
@@ -59,7 +60,8 @@ public interface ISerializer {
      *
      * @param inputStream A stream to read reply from
      * @return Deserialized message
-     * @throws IOException Is thrown on any transportation problem
+     * @throws IOException           Is thrown on any transportation problem
+     * @throws ProtocolDataException If something is wrong with protocol data on request
      */
     MsgRpcReply receiveRpcReply(InputStream inputStream) throws IOException, ProtocolDataException;
 }

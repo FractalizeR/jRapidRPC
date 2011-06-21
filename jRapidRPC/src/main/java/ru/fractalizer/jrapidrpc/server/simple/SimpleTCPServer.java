@@ -18,7 +18,7 @@
 
 package ru.fractalizer.jrapidrpc.server.simple;
 
-import ru.fractalizer.jrapidrpc.api.ISerializer;
+import ru.fractalizer.jrapidrpc.api.Serializer;
 import ru.fractalizer.jrapidrpc.api.ServerStartupException;
 
 import java.io.IOException;
@@ -32,9 +32,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * Class implementing simple multithreaded server
  */
-public class SimpleTCPServer implements ITerminateSignaller {
+public class SimpleTCPServer implements TerminateSignaller {
 
-    private ISerializer              serializer;
+    private Serializer               serializer;
     private int                      port;
     private ExecutorService          executorService;
     private ThreadModelType          threadModelType;
@@ -57,7 +57,7 @@ public class SimpleTCPServer implements ITerminateSignaller {
      * @param backlog                  Controls how ServerSocket is created by the component. See {@link java.net.ServerSocket#ServerSocket(int, int, java.net.InetAddress)}  ServerSocket constructor} for details
      * @param bindAddr                 Controls how ServerSocket is created by the component. See {@link java.net.ServerSocket#ServerSocket(int, int, java.net.InetAddress)}  ServerSocket constructor} for details
      */
-    public SimpleTCPServer(ISerializer serializer, int port, ThreadModelType threadModelType,
+    public SimpleTCPServer(Serializer serializer, int port, ThreadModelType threadModelType,
                            ExecutorService executorService, ThreadPoolOverflowPolicy threadPoolOverflowPolicy,
                            int backlog, InetAddress bindAddr) {
         super();
@@ -71,52 +71,56 @@ public class SimpleTCPServer implements ITerminateSignaller {
     }
 
     /**
-     * SimpleTCP server class. See {@link SimpleTCPServer#SimpleTCPServer(ru.fractalizer.jrapidrpc.api.ISerializer, int, ThreadModelType, java.util.concurrent.ExecutorService, ThreadPoolOverflowPolicy, int, java.net.InetAddress)}.
-     * <ul>
-     * <li>InetAddress bindAddr defaults to null and therefore server socket becomes address-unbound.</li>
-     * </ul>
+     * SimpleTCP server class
+     *
+     * @param serializer               Protocol data serializer instance to use. Must be thread-safe.
+     * @param port                     TCP port on which to listen for client connections
+     * @param threadModelType          Threading model to use
+     * @param executorService          Thread pool manager to use when handling client threads
+     * @param threadPoolOverflowPolicy A policy to use when thread pool overflow is detected
+     * @param backlog                  Controls how ServerSocket is created by the component. See {@link java.net.ServerSocket#ServerSocket(int, int, java.net.InetAddress)}  ServerSocket constructor} for details
      */
-    public SimpleTCPServer(ISerializer serializer, int port, ThreadModelType threadModelType,
+    public SimpleTCPServer(Serializer serializer, int port, ThreadModelType threadModelType,
                            ExecutorService executorService, ThreadPoolOverflowPolicy threadPoolOverflowPolicy,
                            int backlog) {
         this(serializer, port, threadModelType, executorService, threadPoolOverflowPolicy, backlog, null);
     }
 
     /**
-     * SimpleTCP server class. See {@link SimpleTCPServer#SimpleTCPServer(ru.fractalizer.jrapidrpc.api.ISerializer, int, ThreadModelType, java.util.concurrent.ExecutorService, ThreadPoolOverflowPolicy, int, java.net.InetAddress)}.
-     * <ul>
-     * <li>InetAddress bindAddr defaults to null and therefore server socket becomes address-unbound.</li>
-     * <li>backLog is 0 and therefore defaults to default system implementation</li>
-     * </ul>
+     * SimpleTCP server class
+     *
+     * @param serializer               Protocol data serializer instance to use. Must be thread-safe.
+     * @param port                     TCP port on which to listen for client connections
+     * @param threadModelType          Threading model to use
+     * @param executorService          Thread pool manager to use when handling client threads
+     * @param threadPoolOverflowPolicy A policy to use when thread pool overflow is detected
      */
-    public SimpleTCPServer(ISerializer serializer, int port, ThreadModelType threadModelType,
+    public SimpleTCPServer(Serializer serializer, int port, ThreadModelType threadModelType,
                            ExecutorService executorService, ThreadPoolOverflowPolicy threadPoolOverflowPolicy) {
         this(serializer, port, threadModelType, executorService, threadPoolOverflowPolicy, 0, null);
     }
 
     /**
-     * SimpleTCP server class. See {@link SimpleTCPServer#SimpleTCPServer(ru.fractalizer.jrapidrpc.api.ISerializer, int, ThreadModelType, java.util.concurrent.ExecutorService, ThreadPoolOverflowPolicy, int, java.net.InetAddress)}.
-     * <ul>
-     * <li>InetAddress bindAddr defaults to null and therefore server socket becomes address-unbound.</li>
-     * <li>backLog is 0 and therefore defaults to default system implementation</li>
-     * <li>{@link ThreadPoolOverflowPolicy} defaults to ThreadPoolOverflowPolicy.Terminate</li>
-     * </ul>
+     * SimpleTCP server class
+     *
+     * @param serializer      Protocol data serializer instance to use. Must be thread-safe.
+     * @param port            TCP port on which to listen for client connections
+     * @param threadModelType Threading model to use
+     * @param executorService Thread pool manager to use when handling client threads
      */
-    public SimpleTCPServer(ISerializer serializer, int port, ThreadModelType threadModelType,
+    public SimpleTCPServer(Serializer serializer, int port, ThreadModelType threadModelType,
                            ExecutorService executorService) {
         this(serializer, port, threadModelType, executorService, ThreadPoolOverflowPolicy.Terminate, 0, null);
     }
 
     /**
-     * SimpleTCP server class. See {@link SimpleTCPServer#SimpleTCPServer(ru.fractalizer.jrapidrpc.api.ISerializer, int, ThreadModelType, java.util.concurrent.ExecutorService, ThreadPoolOverflowPolicy, int, java.net.InetAddress)}.
-     * <ul>
-     * <li>InetAddress bindAddr defaults to null and therefore server socket becomes address-unbound.</li>
-     * <li>backLog is 0 and therefore defaults to default system implementation</li>
-     * <li>threadPoolOverflowPolicy defaults to ThreadPoolOverflowPolicy.Terminate</li>
-     * <li>executorService defaults to the value returned by Executors.newCachedThreadPool()</li>
-     * </ul>
+     * SimpleTCP server class
+     *
+     * @param serializer      Protocol data serializer instance to use. Must be thread-safe.
+     * @param port            TCP port on which to listen for client connections
+     * @param threadModelType Threading model to use
      */
-    public SimpleTCPServer(ISerializer serializer, int port, ThreadModelType threadModelType) {
+    public SimpleTCPServer(Serializer serializer, int port, ThreadModelType threadModelType) {
         this(serializer, port, threadModelType, Executors.newCachedThreadPool(), ThreadPoolOverflowPolicy.Terminate, 0,
                 null);
     }

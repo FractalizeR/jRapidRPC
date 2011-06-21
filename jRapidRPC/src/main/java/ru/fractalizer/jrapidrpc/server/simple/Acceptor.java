@@ -20,7 +20,7 @@ package ru.fractalizer.jrapidrpc.server.simple;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.fractalizer.jrapidrpc.api.ISerializer;
+import ru.fractalizer.jrapidrpc.api.Serializer;
 import ru.fractalizer.jrapidrpc.api.ServerStartupException;
 import ru.fractalizer.jrapidrpc.tools.ReflectionCache;
 
@@ -38,10 +38,10 @@ class Acceptor<T, V extends T> implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(Acceptor.class);
 
-    private ITerminateSignaller      terminateSignaller;
+    private TerminateSignaller       terminateSignaller;
     private ServerSocket             serverSocket;
     private ExecutorService          executorService;
-    private ISerializer              serializer;
+    private Serializer               serializer;
     private Class<V>                 serviceObjectClass;
     private ReflectionCache          reflectionCache;
     private Object                   serviceObjectSingleton;
@@ -61,8 +61,8 @@ class Acceptor<T, V extends T> implements Runnable {
      * @param threadPoolOverflowPolicy The policy in case of thread pool overflow
      * @throws ServerStartupException Is thrown in case something went wrong
      */
-    Acceptor(ITerminateSignaller terminateSignaller, ServerSocket serverSocket, ThreadModelType threadModelType,
-             ExecutorService executorService, ISerializer serializer, Class<T> serviceInterface,
+    Acceptor(TerminateSignaller terminateSignaller, ServerSocket serverSocket, ThreadModelType threadModelType,
+             ExecutorService executorService, Serializer serializer, Class<T> serviceInterface,
              Class<V> serviceObjectClass, ThreadPoolOverflowPolicy threadPoolOverflowPolicy)
             throws ServerStartupException {
 

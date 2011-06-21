@@ -16,24 +16,15 @@
  * ========================================================================
  */
 
-package ru.fractalizer.jrapidrcdemo;
+package ru.fractalizer.jrapidrpc.api;
 
-import ru.fractalizer.jrapidrpc.api.RpcMethod;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/**
- * RPC interface for sample application
- */
-public interface ServiceInterface {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface RpcPreLogin {
 
-    @RpcMethod(methodId = 10)
-    void voidMethod();
-
-    @RpcMethod(methodId = 20)
-    String mirror(String arg);
-
-    @RpcMethod(methodId = 25)
-    void exceptionTest() throws Exception;
-
-    @RpcMethod(methodId = 30)
-    ComplexType complexTypeMethod(ComplexType arg);
 }

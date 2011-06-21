@@ -21,10 +21,12 @@ package ru.fractalizer.jrapidrpc.server.simple;
 /**
  * An interface implemented by classes that wish to be able to signal termination
  */
-public interface ITerminateSignaller {
+public interface TerminateSignaller {
 
     /**
      * Method returns termination flag for some operation
+     *
+     * @return is termination requested or not
      */
     boolean IsTerminateRequested();
 

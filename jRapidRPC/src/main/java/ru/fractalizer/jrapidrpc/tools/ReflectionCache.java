@@ -19,7 +19,8 @@
 package ru.fractalizer.jrapidrpc.tools;
 
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
-import ru.fractalizer.jrapidrpc.api.RPCMethod;
+import ru.fractalizer.jrapidrpc.api.RpcMethod;
+import ru.fractalizer.jrapidrpc.api.RpcPreLogin;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -33,6 +34,8 @@ public class ReflectionCache {
     private HashMap<Short, String> methodIdToName;
     private HashMap<String, Short> methodNameToId;
 
+    private Method preLoginMethod;
+
     /**
      * Constructor
      *
@@ -40,7 +43,7 @@ public class ReflectionCache {
      */
     public ReflectionCache(Class<?> serviceInterface) {
         if (!serviceInterface.isInterface()) {
-            throw new ClassFormatError("Class " + serviceInterface.getName() + " is not an interface!");
+            throw new ClassFormatError(String.format("Class '%s' is not an interface!", serviceInterface.getName()));
         }
         Method[] methods = serviceInterface.getMethods();
 
@@ -50,11 +53,18 @@ public class ReflectionCache {
 
         for (Method method : methods) {
 
+            //Checking for prelogin annotation
+            RpcPreLogin preLoginAnnotation = method.getAnnotation(RpcPreLogin.class);
+            if (preLoginAnnotation != null) {
+                this.preLoginMethod = method;
+            }
+
             //Getting methodId
-            RPCMethod methodIdAnnotation = method.getAnnotation(RPCMethod.class);
+            RpcMethod methodIdAnnotation = method.getAnnotation(RpcMethod.class);
             if (methodIdAnnotation == null) {
-                throw new ClassFormatError("Method " + method.getName() +
-                        " does not have ru.fractalizer.jrapidrpc.api.RPCMethod annotation!");
+                throw new ClassFormatError(
+                        String.format("Method '%s' does not have ru.fractalizer.jrapidrpc.api.RpcMethod annotation!",
+                                method.getName()));
             }
 
             Short methodId = methodIdAnnotation.methodId();
@@ -102,5 +112,9 @@ public class ReflectionCache {
      */
     public String getMethodName(short methodId) {
         return methodIdToName.get(methodId);
+    }
+
+    public Method getPreLoginMethod() {
+        return preLoginMethod;
     }
 }

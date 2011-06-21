@@ -36,7 +36,7 @@ public class SimpleTCPClient implements InvocationHandler {
 
     private String       serverHost;
     private int          serverPort;
-    private ISerializer  serializer;
+    private Serializer   serializer;
     private Socket       socket;
     private OutputStream outputStream;
     private InputStream  inputStream;
@@ -48,7 +48,7 @@ public class SimpleTCPClient implements InvocationHandler {
      * @param serverPort Port to use at host
      * @param serializer Serializer to use
      */
-    public SimpleTCPClient(String serverHost, int serverPort, ISerializer serializer) {
+    public SimpleTCPClient(String serverHost, int serverPort, Serializer serializer) {
         super();
         this.serverHost = serverHost;
         this.serverPort = serverPort;
@@ -65,7 +65,7 @@ public class SimpleTCPClient implements InvocationHandler {
      */
     public <T> T connect(Class<T> serviceInterface) throws IOException {
         if (!serviceInterface.isInterface()) {
-            throw new ClassFormatError("serviceInterface must be of interface type!");
+            throw new IllegalArgumentException("serviceInterface must be of interface type!");
         }
         try {
             socket = new Socket(this.serverHost, this.serverPort);
