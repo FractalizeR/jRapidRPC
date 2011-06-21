@@ -46,7 +46,7 @@ public class ServiceObject implements ServiceInterface {
 
     @Override
     public boolean prelogin(Socket clientSocket) {
-        System.out.println("preLogin called. IP address is " + clientSocket.getInetAddress());
+        System.out.printf("preLogin called. IP address is '%s'", clientSocket.getInetAddress());
         return true;
     }
 }
