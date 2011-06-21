@@ -75,16 +75,16 @@ class Worker implements Runnable {
         Thread.currentThread().setName("SimpleTCPServer Worker Thread #" + threadNumber.incrementAndGet());
 
         //Calling prelogin method if available
-        Method preLoginMethod = reflectionCache.getPreLoginMethod();
-        if (preLoginMethod != null) {
+        Method afterConnectMethod = reflectionCache.getAfterConnectMethod();
+        if (afterConnectMethod != null) {
             try {
-                if (!((Boolean) preLoginMethod.invoke(serviceObject, clientSocket))) {
-                    logger.info("Prelogin method returned false. Closing client connection and exitting.");
+                if (!((Boolean) afterConnectMethod.invoke(serviceObject, clientSocket))) {
+                    logger.info("afterConnectMethod method returned false. Closing client connection and exitting.");
                     closeClientSocket();
                     return;
                 }
             } catch (Exception e) {
-                logger.error("Exception while calling preLoginMethod on serviceObject!", e);
+                logger.error("Exception while calling afterConnectMethod on serviceObject!", e);
                 closeClientSocket();
                 return;
             }

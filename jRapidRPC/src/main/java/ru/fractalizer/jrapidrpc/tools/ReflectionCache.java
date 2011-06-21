@@ -19,8 +19,8 @@
 package ru.fractalizer.jrapidrpc.tools;
 
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
+import ru.fractalizer.jrapidrpc.api.RpcAfterConnect;
 import ru.fractalizer.jrapidrpc.api.RpcMethod;
-import ru.fractalizer.jrapidrpc.api.RpcPreLogin;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class ReflectionCache {
     private HashMap<Short, String> methodIdToName;
     private HashMap<String, Short> methodNameToId;
 
-    private Method preLoginMethod;
+    private Method afterConnectMethod;
 
     /**
      * Constructor
@@ -54,9 +54,9 @@ public class ReflectionCache {
         for (Method method : methods) {
 
             //Checking for prelogin annotation
-            RpcPreLogin preLoginAnnotation = method.getAnnotation(RpcPreLogin.class);
-            if (preLoginAnnotation != null) {
-                this.preLoginMethod = method;
+            RpcAfterConnect afterConnectAnnotation = method.getAnnotation(RpcAfterConnect.class);
+            if (afterConnectAnnotation != null) {
+                this.afterConnectMethod = method;
             }
 
             //Getting methodId
@@ -110,7 +110,7 @@ public class ReflectionCache {
         return methodIdToName.get(methodId);
     }
 
-    public Method getPreLoginMethod() {
-        return preLoginMethod;
+    public Method getAfterConnectMethod() {
+        return afterConnectMethod;
     }
 }
