@@ -61,25 +61,21 @@ public class ReflectionCache {
 
             //Getting methodId
             RpcMethod methodIdAnnotation = method.getAnnotation(RpcMethod.class);
-            if (methodIdAnnotation == null) {
-                throw new ClassFormatError(
-                        String.format("Method '%s' does not have ru.fractalizer.jrapidrpc.api.RpcMethod annotation!",
-                                method.getName()));
+            if (methodIdAnnotation != null) {
+                Short methodId = methodIdAnnotation.methodId();
+
+                //Reading parameter types and their schemas
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                for (Class<?> parameterType : parameterTypes) {
+                    //Caching schemas. No need to store them
+                    RuntimeSchema.getSchema(parameterType.getClass());
+                }
+
+                //Putting everything to collections
+                methodIdToMethod.put(methodId, method);
+                methodIdToName.put(methodId, method.getName());
+                methodNameToId.put(method.getName(), methodId);
             }
-
-            Short methodId = methodIdAnnotation.methodId();
-
-            //Reading parameter types and their schemas
-            Class<?>[] parameterTypes = method.getParameterTypes();
-            for (Class<?> parameterType : parameterTypes) {
-                //Caching schemas. No need to store them
-                RuntimeSchema.getSchema(parameterType.getClass());
-            }
-
-            //Putting everything to collections
-            methodIdToMethod.put(methodId, method);
-            methodIdToName.put(methodId, method.getName());
-            methodNameToId.put(method.getName(), methodId);
         }
     }
 

@@ -18,6 +18,8 @@
 
 package ru.fractalizer.jrapidrcdemo;
 
+import java.net.Socket;
+
 public class ServiceObject implements ServiceInterface {
 
     @Override
@@ -40,5 +42,11 @@ public class ServiceObject implements ServiceInterface {
         arg.testField1++;
         arg.testField2 = !arg.testField2;
         return arg;
+    }
+
+    @Override
+    public boolean prelogin(Socket clientSocket) {
+        System.out.println("preLogin called. IP address is " + clientSocket.getInetAddress());
+        return true;
     }
 }

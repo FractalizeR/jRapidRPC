@@ -19,6 +19,9 @@
 package ru.fractalizer.jrapidrcdemo;
 
 import ru.fractalizer.jrapidrpc.api.RpcMethod;
+import ru.fractalizer.jrapidrpc.api.RpcPreLogin;
+
+import java.net.Socket;
 
 /**
  * RPC interface for sample application
@@ -36,4 +39,7 @@ public interface ServiceInterface {
 
     @RpcMethod(methodId = 30)
     ComplexType complexTypeMethod(ComplexType arg);
+
+    @RpcPreLogin
+    boolean prelogin(Socket clientSocket);
 }
