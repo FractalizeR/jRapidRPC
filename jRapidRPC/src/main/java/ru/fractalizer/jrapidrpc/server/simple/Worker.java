@@ -137,15 +137,7 @@ class Worker implements Runnable {
                 return;
 
             } catch (InvocationTargetException e) {
-                logger.error(
-                        "InvocationTargetException when invoking method with name + " + msgRpcRequest.getMethodName() +
-                                " on service object of type " + serviceObject.getClass().getName(), e);
-                closeClientSocket();
-                return;
-
-            } catch (Exception e) {
-                //Attempting to catch any other exception thrown by the method we invoked
-                MsgRpcReply rpcReply = new MsgRpcReply(e.getMessage(), null);
+                MsgRpcReply rpcReply = new MsgRpcReply(e.getCause().getMessage(), null);
                 try {
                     serializer.sendRpcReply(rpcReply, outputStream);
                 } catch (IOException e1) {
@@ -155,6 +147,11 @@ class Worker implements Runnable {
                     return;
                 }
                 continue; //Attempting to continue execution
+            } catch (Exception e) {
+                logger.error("Unexpected exception when invoking method with name '" + msgRpcRequest.getMethodName() +
+                        "' on service object of type '" + serviceObject.getClass().getName() + "'", e);
+                closeClientSocket();
+                return;
             }
 
             //Sending reply
