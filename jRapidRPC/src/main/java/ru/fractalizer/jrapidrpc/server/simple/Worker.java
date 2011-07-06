@@ -131,9 +131,8 @@ class Worker implements Runnable {
             try {
                 methodResult = method.invoke(serviceObject, msgRpcRequest.getMethodParameters());
             } catch (IllegalAccessException e) {
-                logger.error(
-                        "IllegalAccessException when invoking method with name + " + msgRpcRequest.getMethodName() +
-                                " on service object of type " + serviceObject.getClass().getName(), e);
+                logger.error("IllegalAccessException when invoking method with name '" + msgRpcRequest.getMethodName() +
+                        "' on service object of type '" + serviceObject.getClass().getName() + "'", e);
                 closeClientSocket();
                 return;
 
